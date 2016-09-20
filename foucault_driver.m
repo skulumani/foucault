@@ -30,7 +30,7 @@ Cbeta = constants.Cbeta;
 Re = constants.Re;
 
 %% simulation parameters
-tspan = [0:1:3600]; % seconds
+tspan = [0:0.1:3600]; % seconds
 pos_initial = ROT2(45*pi/180)'*[-1;0;0];
 vel_initial = [0;0;0];
 
@@ -38,9 +38,9 @@ initial_condition = [pos_initial;vel_initial];
 ode_options = odeset('RelTol',1e-9,'AbsTol',1e-9);
 
 %% call ODE
-[t_full,state_full] = ode113(@(t,state)foucault_ode(t,state,constants),tspan,initial_condition,ode_options);
-[t_len,state_len] = ode113(@(t,state)foucault_ode_length(t,state,constants),tspan,initial_condition,ode_options);
-[t_rot,state_rot] = ode113(@(t,state)foucault_ode_rot(t,state,constants),tspan,initial_condition,ode_options);
+[t_full,state_full] = ode45(@(t,state)foucault_ode(t,state,constants),tspan,initial_condition,ode_options);
+[t_len,state_len] = ode45(@(t,state)foucault_ode_length(t,state,constants),tspan,initial_condition,ode_options);
+[t_rot,state_rot] = ode45(@(t,state)foucault_ode_rot(t,state,constants),tspan,initial_condition,ode_options);
 
 pos_full = state_full(:,1:3); % direction of mass in body frame
 vel_full = state_full(:,4:6);
@@ -109,15 +109,15 @@ fontname = 'Times';
 
 e_fig = figure;
 grid on;hold on
-plot(t_full,E_diff_full)
-% plot(t_len,E_diff_len)
-% plot(t_rot,E_diff_rot)
+plot(t_full,abs(E_diff_full./E_full))
+plot(t_len,abs(E_diff_len./E_len))
+plot(t_rot,abs(E_diff_rot./E_rot))
 
-title('Energy Difference','interpreter','latex','FontName',fontname,'FontSize',fontsize);
+title('Relative Energy Difference','interpreter','latex','FontName',fontname,'FontSize',fontsize);
 xlabel('Time (sec)','interpreter','latex','FontName',fontname,'FontSize',fontsize);
-ylabel('$\Delta E$','interpreter','latex','FontName',fontname,'FontSize',fontsize);
-% e_fig_leg = legend('Full EOMS','$ L << r $','$ r \Omega^2 << g $');
-% set(e_fig_leg,'interpreter','latex','FontName',fontname,'FontSize',fontsize);
+ylabel('$\Delta E / E$','interpreter','latex','FontName',fontname,'FontSize',fontsize);
+e_fig_leg = legend('Full EOMS','$ L << r $','$ r \Omega^2 << g $');
+set(e_fig_leg,'interpreter','latex','FontName',fontname,'FontSize',fontsize);
 set(gca,'FontName',fontname,'FontSize',fontsize);
 
 % 2-D projections
@@ -127,8 +127,8 @@ pos_fig = figure;
 subplot(2,2,1)
 grid on;hold all
 plot(pend_pos_full(:,2),pend_pos_full(:,3))
-% plot(pend_pos_len(:,2),pend_pos_len(:,3))
-% plot(pend_pos_rot(:,2),pend_pos_rot(:,3))
+plot(pend_pos_len(:,2),pend_pos_len(:,3))
+plot(pend_pos_rot(:,2),pend_pos_rot(:,3))
 title('$b_2$ vs $b_3$','interpreter','latex','FontName',fontname,'FontSize',fontsize);
 set(gca,'FontName',fontname,'FontSize',fontsize);
 
@@ -136,19 +136,19 @@ set(gca,'FontName',fontname,'FontSize',fontsize);
 subplot(2,2,3)
 grid on;hold all
 plot(pend_pos_full(:,2),pend_pos_full(:,1))
-% plot(pend_pos_len(:,2),pend_pos_len(:,1))
-% plot(pend_pos_rot(:,2),pend_pos_rot(:,1))
+plot(pend_pos_len(:,2),pend_pos_len(:,1))
+plot(pend_pos_rot(:,2),pend_pos_rot(:,1))
 title('$b_2$ vs $b_1$','interpreter','latex','FontName',fontname,'FontSize',fontsize);
 set(gca,'FontName',fontname,'FontSize',fontsize);
 
 subplot(2,2,4)
 grid on;hold all
 plot(pend_pos_full(:,3),pend_pos_full(:,1))
-% plot(pend_pos_len(:,3),pend_pos_len(:,1))
-% plot(pend_pos_rot(:,3),pend_pos_rot(:,1))
+plot(pend_pos_len(:,3),pend_pos_len(:,1))
+plot(pend_pos_rot(:,3),pend_pos_rot(:,1))
 title('$b_3$ vs $b_1$','interpreter','latex','FontName',fontname,'FontSize',fontsize);
-% pos_fig_leg = legend('Full EOMS','$ L << r $','$ r \Omega^2 << g $');
-% set(pos_fig_leg,'interpreter','latex','FontName',fontname,'FontSize',fontsize);
+pos_fig_leg = legend('Full EOMS','$ L << r $','$ r \Omega^2 << g $');
+set(pos_fig_leg,'interpreter','latex','FontName',fontname,'FontSize',fontsize);
 set(gca,'FontName',fontname,'FontSize',fontsize);
 
 % animation
