@@ -14,13 +14,13 @@ constants.mu = 3.986004418e14; % m^3/sec
 % constants.beta = 48.846222*pi/180; % Latitude for the Pantheon, Paris 
 constants.L = 67;
 constants.m = 28;
-constants.beta = 0*pi/180; % latitude of pivot location on Earth
+constants.beta = 48*pi/180; % latitude of pivot location on Earth
 constants.Re = 6378.137 * 1e3; % meters radius of the Earth
 constants.g = 9.7976432222; % mean g at equator in meters/sec^2
-constants.Cbeta = [cos(constants.beta)^2                    0   -sin(constants.beta)*cos(constants.beta);...
+constants.Cbeta = [cos(constants.beta)^2                    0   sin(constants.beta)*cos(constants.beta);...
                    0                                        1              0                          ;...
-                   -sin(constants.beta)*cos(constants.beta) 0   sin(constants.beta)^2];
-constants.S = hat_map(constants.Omega*(ROT2(constants.beta)')'*[0;0;1]); % my ROT matrix assumes row notation
+                   sin(constants.beta)*cos(constants.beta) 0   sin(constants.beta)^2];
+constants.S = hat_map(constants.Omega*(ROT2(-constants.beta)'*[0;0;1])); 
 
 m = constants.m;
 Len = constants.L;
@@ -30,8 +30,8 @@ Cbeta = constants.Cbeta;
 Re = constants.Re;
 
 %% simulation parameters
-tspan = [0:0.1:3600]; % seconds
-pos_initial = ROT2(45*pi/180)'*[-1;0;0];
+tspan = [0:0.1:100]; % seconds
+pos_initial = ROT2(45*pi/180)*[-1;0;0];
 vel_initial = [0;0;0];
 
 initial_condition = [pos_initial;vel_initial];
@@ -152,3 +152,4 @@ set(pos_fig_leg,'interpreter','latex','FontName',fontname,'FontSize',fontsize);
 set(gca,'FontName',fontname,'FontSize',fontsize);
 
 % animation
+body_animation(t_full,pos_full,vel_full,constants)
