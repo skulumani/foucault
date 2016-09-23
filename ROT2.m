@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%   Purpose: Rotation matrix about second axis (assumes row format)
-%   b = a*dcm
+%   Purpose: Rotation matrix about second axis 
+%   b = dcm*a
 %
 %   Inputs: 
 %       - beta - rotation angle (rad)
@@ -11,8 +11,7 @@
 %   Dependencies: 
 %       - none
 %
-%   Author: Shankar Kulumani 18 Aug 2012
-%           26 Jan 2013 - converted to row format representation
+%   Author: Shankar Kulumani 23 September 2016
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function rot2 = ROT2(beta)

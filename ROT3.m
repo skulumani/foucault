@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%   Purpose: Rotation matrix about thrid axis (assumes row format)
-%   b = a*dcm_a2b
+%   Purpose: Rotation matrix about thrid axis
+%   b = dcm*a
 %
 %   Inputs: 
 %       - gamma - rotation angle (rad)
@@ -11,9 +11,7 @@
 %   Dependencies: 
 %       - none
 %
-%   Author: Shankar Kulumani 18 Aug 2012
-%               - 15 Sept 2012 fixed error
-%               - 26 Jan 2013 - converted to row format representation
+%   Author: Shankar Kulumani 23 September 2016
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function rot3 = ROT3(gamma)
