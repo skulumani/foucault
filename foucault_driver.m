@@ -7,14 +7,15 @@ close all
 
 %% define constants
 constants.Omega = 7.2921158553e-5; % rad/sec earth angular velocity
+% constants.Omega = 2*pi/(86400/6);
 constants.mu = 3.986004418e14; % m^3/sec
 % % original Foucault Pendulum
 % constants.L = 67; % meters
 % constants.m = 28; % kilograms
 % constants.beta = 48.846222*pi/180; % Latitude for the Pantheon, Paris 
-constants.L = 67;
-constants.m = 28;
-constants.beta = 48*pi/180; % latitude of pivot location on Earth
+constants.L = 100;
+constants.m = 100;
+constants.beta = 90*pi/180; % latitude of pivot location on Earth
 constants.Re = 6378.137 * 1e3; % meters radius of the Earth
 constants.g = 9.7976432222; % mean g at equator in meters/sec^2
 constants.Cbeta = [cos(constants.beta)^2                    0   sin(constants.beta)*cos(constants.beta);...
@@ -30,7 +31,7 @@ Cbeta = constants.Cbeta;
 Re = constants.Re;
 
 %% simulation parameters
-tspan = [0:0.1:100]; % seconds
+tspan = [0:0.1:200]; % seconds
 pos_initial = ROT2(45*pi/180)*[-1;0;0];
 vel_initial = [0;0;0];
 
