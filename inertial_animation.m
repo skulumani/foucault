@@ -1,6 +1,6 @@
 % 23 September 2016
 % animation for foucault pendulum expressed in inertial frame
-function inertial_animation(t,q,qd,constants)
+function inertial_animation(t,q,qd,constants,type,filename)
 % draw position of pendulum in the body frame
 
 fig_handle = figure();
@@ -30,6 +30,19 @@ ymin = axis_data.YLim(1);
 ymax = axis_data.YLim(2);
 zmin = axis_data.ZLim(1);
 zmax = axis_data.ZLim(2);
+
+switch type
+    case 'gif'
+        f = getframe;
+        [im,map] = rgb2ind(f.cdata,256,'nodither');
+    case 'movie'
+        % M(1:length(tspan))= struct('cdata',[],'colormap',[]);
+        nFrames = length(tspan);
+        vidObj = VideoWriter([filename '.avi']);
+        vidObj.Quality = 100;
+        vidObj.FrameRate = 8;
+        open(vidObj);
+end
 
 % loop over time
 for ii = 1:1:length(t)
@@ -78,4 +91,38 @@ for ii = 1:1:length(t)
     plot3(traj_inertial(ind,1),traj_inertial(ind,2),traj_inertial(ind,3),'Marker','.','MarkerSize',1,'color','k');
     
     drawnow;
+    
+    % save animation 
+    switch type
+        case 'gif'
+            
+            frame = getframe(1);
+            im = frame2im(frame);
+            [imind,cm] = rgb2ind(im,256);
+            outfile = [filename '.gif'];
+            
+            % On the first loop, create the file. In subsequent loops, append.
+            if ii==1
+                imwrite(imind,cm,outfile,'gif','DelayTime',0,'loopcount',inf);
+            else
+                imwrite(imind,cm,outfile,'gif','DelayTime',0,'writemode','append');
+            end
+        case 'movie'
+            % M(ii)=getframe(gcf,[0 0 560 420]); % leaving gcf out crops the frame in the movie.
+            writeVideo(vidObj,getframe(gca));
+        otherwise
+    end
+    
 end
+
+% Output the movie as an avi file
+switch type
+    case 'gif'
+        fprintf('Finished animation\n')
+    case 'movie'
+        %movie2avi(M,[filename '.avi']);
+        close(vidObj);
+        fprintf('Finished animation - movie saved\n')
+    otherwise
+end
+        
