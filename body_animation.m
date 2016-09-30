@@ -4,9 +4,15 @@ function body_animation(t,q,qd,constants)
 % draw position of pendulum in the body frame
 
 % body frame reference frame
+% Rotate body frame to match matlab figure (gravity is downward -z
+% direction)
 b1 = constants.L*[1;0;0];
 b2 = constants.L*[0;1;0];
 b3 = constants.L*[0;0;1];
+
+b1 = ROT3(-pi/2)*ROT2(-pi/2)*b1;
+b2 = ROT3(-pi/2)*ROT2(-pi/2)*b2;
+b3 = ROT3(-pi/2)*ROT2(-pi/2)*b3;
 
 fig_handle = figure();
 
@@ -30,11 +36,8 @@ ymax = axis_data.YLim(2);
 zmin = axis_data.ZLim(1);
 zmax = axis_data.ZLim(2);
 
-
-
-
 % loop over time
-for ii = 1:1:length(t)
+for ii = 1:100:length(t)
     cla
     % compute the position of the pendulum mass (L q)
     pos = traj(ii,:);
@@ -51,10 +54,15 @@ for ii = 1:1:length(t)
     line([0 b3(1)],[0 b3(2)],[0 b3(3)],'color','b','linewidth',1)
     text(b3(1),b3(2),b3(3),'$\hat{b}_3$','interpreter','Latex')
     
+    % arrow head
+    plot3(b1(1),b1(2),b1(3),'r>','Linewidth',1.5)
+    plot3(b2(1),b2(2),b2(3),'g>','Linewidth',1.5)
+    plot3(b3(1),b3(2),b3(3),'b^','Linewidth',1.5)
+    
     % inertial frame
-    plot3([xmin,xmax],[0 0],[0 0],'red','Linewidth',1); plot3(xmax,0,0,'r>','Linewidth',1.5);
-    plot3([0 0],[ymin,ymax],[0 0],'green','Linewidth',1); plot3(0,ymax,0,'g>','Linewidth',1.5);
-    plot3([0 0],[0 0],[zmin,zmax],'blue','Linewidth',1); plot3(0,0,zmax,'b^','Linewidth',1.5);
+%     plot3([xmin,xmax],[0 0],[0 0],'red','Linewidth',1); plot3(xmax,0,0,'r>','Linewidth',1.5);
+%     plot3([0 0],[ymin,ymax],[0 0],'green','Linewidth',1); plot3(0,ymax,0,'g>','Linewidth',1.5);
+%     plot3([0 0],[0 0],[zmin,zmax],'blue','Linewidth',1); plot3(0,0,zmax,'b^','Linewidth',1.5);
 
     % plot trajectory through space
     

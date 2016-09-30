@@ -35,11 +35,11 @@ zmax = axis_data.ZLim(2);
 for ii = 1:1:length(t)
     cla
     % compute the rotation from body frame to inertial frame
-    R_b2i = ROT2(-constants.beta)*ROT3(constants.Omega*t(ii));
-    R_i2b = R_b2i';
+    R_i2b = ROT3(constants.Omega*t(ii))*ROT2(-constants.beta);
+    R_b2i = R_i2b';
     
     % compute the position of the pendulum mass (L q)
-    pos = R_b2i*traj(ii,:)';
+    pos = R_b2i'*traj(ii,:)';
     traj_inertial(ii,:) = pos';
     
     xcoord = pos(2);
@@ -47,9 +47,9 @@ for ii = 1:1:length(t)
     zcoord = pos(1);
     
     % rotate the body frame axes and plot
-    b1 = R_b2i*e1;
-    b2 = R_b2i*e2;
-    b3 = R_b2i*e3;
+    b1 = R_i2b*e1;
+    b2 = R_i2b*e2;
+    b3 = R_i2b*e3;
     
     % draw the rotating frame
     line([0 b1(1)],[0 b1(2)],[0 b1(3)],'color','r','linewidth',1)
@@ -76,5 +76,6 @@ for ii = 1:1:length(t)
     end
     
     plot3(traj_inertial(ind,1),traj_inertial(ind,2),traj_inertial(ind,3),'Marker','.','MarkerSize',1,'color','k');
+    
     drawnow;
 end
