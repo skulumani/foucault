@@ -35,7 +35,7 @@ Re = constants.Re;
 %% simulation parameters
 tspan = [0:0.1:200]; % seconds
 pos_initial = ROT2(90*pi/180)*[-1;0;0];
-vel_initial = [0;0.1;0];
+vel_initial = [0;0.01;0];
 
 initial_condition = [pos_initial;vel_initial];
 ode_options = odeset('RelTol',1e-9,'AbsTol',1e-9);
