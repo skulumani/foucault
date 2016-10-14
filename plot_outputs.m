@@ -89,3 +89,13 @@ plot(pend_pos(:,3),pend_pos(:,1))
 title('$b_3$ vs $b_1$','interpreter','latex','FontName',fontname,'FontSize',fontsize);
 
 set(gca,'FontName',fontname,'FontSize',fontsize);
+
+% plot the norm of the position vector
+norm_plot = figure;
+grid on
+hold on
+norm_q = sqrt(sum(q.^2,2));
+plot(t,norm_q)
+title('$||q||$','interpreter','latex','FontName',fontname,'FontSize',fontsize);
+xlabel('Time (sec)','interpreter','latex','FontName',fontname,'FontSize',fontsize);
+ylabel('$||q||$','interpreter','latex','FontName',fontname,'FontSize',fontsize);
