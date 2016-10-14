@@ -33,9 +33,11 @@ Cbeta = constants.Cbeta;
 Re = constants.Re;
 
 %% simulation parameters
-tspan = [0:0.1:200]; % seconds
-pos_initial = ROT2(30*pi/180)*[-1;0;0];
-vel_initial = [0;0.1;0.1];
+tspan = [0:0.01:60]; % seconds
+pos_initial = ROT2(90*pi/180)*[-1;0;0];
+vel_initial = [0.5;0;0];
+
+% qdot should be perpendicular to q
 
 initial_condition = [pos_initial;vel_initial];
 ode_options = odeset('RelTol',1e-13,'AbsTol',1e-13);
@@ -59,11 +61,11 @@ pend_pos_full = constants.L*pos_full; % location of mass in body frame
 
 
 %% Plot the outputs
-% plot_outputs(t_full,pos_full,vel_full,constants) % without L applied (direction only)
+plot_outputs(t_full,pos_full,vel_full,constants) % without L applied (direction only)
 
-type = 'gif';
+type = 'none';
 filename = 'pend';
 
 % animation
-body_animation(t_full,pos_full,vel_full,constants,type,strcat(filename,'_body'))
+% body_animation(t_full,pos_full,vel_full,constants,type,strcat(filename,'_body'))
 % inertial_animation(t_full,pos_full,vel_full,constants,type,strcat(filename,'_inertial'))
