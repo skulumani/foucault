@@ -92,6 +92,9 @@ for ii = 1:1:length(t)
     plot3(traj(ind,2),traj(ind,3),traj(ind,1),'Marker','.','MarkerSize',1,'color','k');
     % ground trace
     plot3(traj(1:ii,2),traj(1:ii,3),(-constants.L-0.1*constants.L)*ones(ii,1),'Marker','.','color','g','MarkerSize',1);
+    
+    % add the current simulation time to a window someplace
+    text(-1*constants.L,1*constants.L,1*constants.L,sprintf('%5.2f s',t(ii)))
     drawnow;
     
     % save animation 
