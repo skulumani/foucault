@@ -74,4 +74,5 @@ for ii = 1:num_trials
    plot_outputs(sim_data(ii).t_full,sim_data(ii).pos_full,sim_data(ii).vel_full,sim_data(ii).constants)
    
    keyboard
+   close all
 end
