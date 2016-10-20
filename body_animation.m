@@ -43,10 +43,10 @@ switch type
         [im,map] = rgb2ind(f.cdata,256,'nodither');
     case 'movie'
         % M(1:length(tspan))= struct('cdata',[],'colormap',[]);
-        nFrames = length(tspan);
+        nFrames = length(t);
         vidObj = VideoWriter([filename '.avi']);
         vidObj.Quality = 100;
-        vidObj.FrameRate = 8;
+        vidObj.FrameRate = 60;
         open(vidObj);
 end
 
