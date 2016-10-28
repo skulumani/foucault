@@ -70,7 +70,3 @@ def ROT3(gamma):
         ]);
 
     return rot3
-
-def hat_map(vector):
-
-def vee_map(matrix):
