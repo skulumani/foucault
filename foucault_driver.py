@@ -1,6 +1,7 @@
 # Main python driver script
 import numpy as np
-import scipy as sp 
+from rot.euler_rot import ROT2
+from rot.dcm import hat_map
 
 # Load packages
 
