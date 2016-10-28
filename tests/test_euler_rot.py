@@ -1,4 +1,4 @@
-from context import euler_rot 
+import rot.euler_rot as euler_rot 
 import unittest
 import numpy as np 
 import numpy.testing as npt
