@@ -28,16 +28,17 @@ def load_constants():
     'beta': 40*np.pi/180, # latitude for pivot in radians
     'Re': 6378.137 * 1e3, # meters radius of the Earth
     'g': 9.7976432222, # m/sec^2 acceleration due to Gravity
-    'S': S 
     }
 
     beta = constants['beta']
-    Cbeta = nd.array([
-        [np.cos(beta)^2, 0, -np.sin(beta)*np.cos(beta)],
+    Cbeta = np.array([
+        [np.cos(beta)**2, 0, -np.sin(beta)*np.cos(beta)],
         [0,1,0],
-        [-np.sin(beta)*np.cos(beta), 0 , np.sin(beta)^2]
+        [-np.sin(beta)*np.cos(beta), 0 , np.sin(beta)**2]
         ])
     constants["Cbeta"] = Cbeta
+
+    constants["S"] = hat_map(constants["Omega"]*np.dot(np.transpose(ROT2(-constants["beta"])),np.array([0,0,1]))); 
 
     return constants
 
