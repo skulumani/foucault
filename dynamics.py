@@ -58,10 +58,10 @@ class Pendulum(object):
         body_pos = Re * np.array([1, 0, 0]) + L * pos
 
         pos_dot = vel
-        vel_dot = -1 / m / L**2 * ( m*L**2*np.linalg.norm(vel)**2*pos + 2*m*L**2*proj_mat*S*vel
-                                    - m*L*Omega**2*proj_mat*Cbeta*body_pos + m*g*Re**2*L*proj_mat*body_pos/np.linalg.norm(body_pos)**3)
-
-        state_dot = np.hstack(pos_dot, vel_dot)
+        vel_dot = -1 / m / L**2 * ( m*L**2*np.linalg.norm(vel)**2*pos + 2*m*L**2*proj_mat.dot(S).dot(vel)
+                                    - m*L*Omega**2*proj_mat.dot(Cbeta).dot(body_pos) + m*g*Re**2*L*proj_mat.dot(body_pos)/np.linalg.norm(body_pos)**3)
+        
+        state_dot = np.hstack((pos_dot, vel_dot))
 
         return state_dot
     
@@ -84,8 +84,8 @@ class Pendulum(object):
         proj_mat = np.eye(3) - np.outer(pos, pos)
 
         pos_dot = vel
-        vel_dot = -1/m/L**2 * (m*L**2*np.linalg.norm(vel)**2*pos + 2*m*L**2*proj_mat*S*vel 
-                        - m*L*Re*Omega**2*proj_mat*Cbeta*np.array([1,0,0]) + m*g*L*proj_mat*np.array([1,0,0]))
+        vel_dot = -1/m/L**2 * (m*L**2*np.linalg.norm(vel)**2*pos + 2*m*L**2*proj_mat.dot(S).dot(vel) 
+                        - m*L*Re*Omega**2*proj_mat.dot(Cbeta).dot(np.array([1,0,0])) + m*g*L*proj_mat.dot(np.array([1,0,0])))
 
         state_dot = np.hstack((pos_dot, vel_dot))
 
