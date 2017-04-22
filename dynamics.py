@@ -116,4 +116,74 @@ class Pendulum(object):
 
         return state_dot
 
+    def nl_energy(self, state, time):
+        """Compute the energy for the full Nonlinear EOMs
 
+        """
+
+        # extract out the constants we need
+        Cbeta = self.Cbeta
+        S = self.S
+        Omega = self.Omega
+        Len = self.L
+        m = self.m
+        Re = self.Re
+        g = self.g
+
+        T = np.zeros(state.shape[0])
+        V = np.zeros(state.shape[0])
+        L = np.zeros(state.shape[0])
+        E = np.zeros(state.shape[0])
+        
+        q = state[:,0:3]
+        qd = state[:, 3:6]
+        
+        for ii in range(state.shape[0]):
+            body_pos = Re*np.array([1, 0, 0]) + Len*q[ii,:]
+
+            T[ii] = (1/2 *m*Len**2*np.linalg.norm(qd[ii,:])**2 + m*Len*qd[ii,:].dot(S).dot(body_pos)
+                    + 1/2*m*Omega**2*body_pos.dot(Cbeta).dot(body_pos))
+
+            V[ii] = - m*g*Re**2 / np.linalg.norm(body_pos)
+
+            L[ii] = T[ii] - V[ii]
+            E[ii] = T[ii] + V[ii]
+
+
+        return (T, V, L, E)
+
+    def len_energy(self, state, time):
+        """Compute the energy for the lenght based reduced  EOMs
+
+        """
+
+        # extract out the constants we need
+        Cbeta = self.Cbeta
+        S = self.S
+        Omega = self.Omega
+        Len = self.L
+        m = self.m
+        Re = self.Re
+        g = self.g
+
+        T = np.zeros(state.shape[0])
+        V = np.zeros(state.shape[0])
+        L = np.zeros(state.shape[0])
+        E = np.zeros(state.shape[0])
+        
+        q = state[:,0:3]
+        qd = state[:, 3:6]
+        
+        for ii in range(state.shape[0]):
+            body_pos = Re*np.array([1, 0, 0]) + Len*q[ii,:]
+
+            T[ii] = (1/2 *m*Len**2*np.linalg.norm(qd[ii,:])**2 + m*Len*qd[ii,:].dot(S).dot(body_pos)
+                    + 1/2*m*Omega**2*body_pos.dot(Cbeta).dot(body_pos))
+
+            V[ii] = - m*g*Re**2 / np.linalg.norm(body_pos)
+
+            L[ii] = T[ii] - V[ii]
+            E[ii] = T[ii] + V[ii]
+
+
+        return (T, V, L, E)
