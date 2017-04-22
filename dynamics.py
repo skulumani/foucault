@@ -1,6 +1,6 @@
 import numpy as np
 import kinematics.attitude as att
-
+import pdb 
 class Pendulum(object):
     """Foucault pendulum dynamics
 
@@ -24,15 +24,19 @@ class Pendulum(object):
         # constants.L = 67; % meters
         # constants.m = 28; % kilograms
         # constants.beta = 48.846222*pi/180; % Latitude for the Pantheon, Paris 
-        Re = 6378.137 * 1e3
-        g = 9.7976432222
-        Cbeta = np.array( [[np.cos(beta)**2, 0, -np.sin(beta)*np.cos(beta)],
+        self.Omega = Omega
+        self.L = L
+        self.m = m
+        self.beta = beta
+        self.Re = 6378.137 * 1e3
+        self.g = 9.7976432222
+        self.Cbeta = np.array( [[np.cos(beta)**2, 0, -np.sin(beta)*np.cos(beta)],
                             [0,1,0],
                             [-np.sin(beta)*np.cos(beta), 0, np.sin(beta)**2]])
 
-        mu = 3.986004418e14 # m^3/sec
+        self.mu = 3.986004418e14 # m^3/sec
 
-        S = att.hat_map(Omega*(att.rot2(-beta, 'c').T.dot(np.array([0,0,1])))) 
+        self.S = att.hat_map(Omega*(att.rot2(-beta, 'c').T.dot(np.array([0,0,1])))) 
 
     def nl_ode(self, state, t):
         """Nonlinear EOMs
@@ -44,6 +48,7 @@ class Pendulum(object):
         Omega = self.Omega
         Re = self.Re
         g = self.g
+        Cbeta = self.Cbeta
 
         pos = state[0:3]
         vel = state[3:6]
@@ -71,6 +76,7 @@ class Pendulum(object):
         Omega = self.Omega
         Re = self.Re
         g = self.g
+        Cbeta = self.Cbeta
 
         pos = state[0:3]
         vel = state[3:6]
