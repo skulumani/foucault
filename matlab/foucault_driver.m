@@ -16,9 +16,9 @@ Cbeta = constants.Cbeta;
 Re = constants.Re;
 
 %% simulation parameters
-tspan = [0:0.01:60]; % seconds
+tspan = [0:0.01:600]; % seconds
 pos_initial = ROT2(90*pi/180)*[-1;0;0];
-vel_initial = [0.5;0;0];
+vel_initial = [0;0.1;0];
 
 % qdot should be perpendicular to q
 
