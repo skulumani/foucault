@@ -1,11 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-from matplotlib import animation
+from matplotlib import animation, rc
 from mpl_toolkits.mplot3d import axes3d
 
 from kinematics import attitude
 import pdb
+
+# set matplotlib parameters
+rc('font', **{'family':'serif', 'serif':['Computer Modern Roman']})
+rc('text', usetex=True)
+
 def animate_pendulum(time, state, pend):
     
     pos = pend.L * state[:, 0:3]
@@ -25,13 +30,13 @@ def animate_pendulum(time, state, pend):
     ax = axes3d.Axes3D(fig)
 
     ax.set_xlim3d([-ax_lim, ax_lim])
-    ax.set_xlabel(r'b_2')
+    ax.set_xlabel(r'$b_2$')
     
     ax.set_ylim3d([-ax_lim, ax_lim])
-    ax.set_ylabel(r'b_3')
+    ax.set_ylabel(r'$b_3$')
 
     ax.set_zlim3d([-ax_lim, ax_lim])
-    ax.set_zlabel(r'b_1')
+    ax.set_zlabel(r'$b_1$')
 
     ax_colors = ['r', 'g', 'b']
 
