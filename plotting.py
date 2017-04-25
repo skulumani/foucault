@@ -92,31 +92,34 @@ def animate_pendulum(time, state, pend):
 
     plt.show()
 
-# extract out the state
-# pend_pos = pend.L * state_nl[:,0:3]
-# 
-# # plot the energy behavior
-# energy_ax = plt.figure().add_subplot(111)
-# energy_ax.plot(time, E, label=r'$E$')
-# energy_ax.set_xlabel('Time')
-# energy_ax.set_ylabel(r'$E$')
-# energy_ax.grid(True)
-# 
-# pos_norm_ax = plt.figure().add_subplot(111)
-# pos_norm_ax.plot(time, np.linalg.norm(state_nl[:,0:3], ord=2, axis=1), label='NL')
-# pos_norm_ax.set_xlabel('Time')
-# pos_norm_ax.set_ylabel(r'$||q||$')
-# pos_norm_ax.grid(True)
-# pos_norm_ax.legend()
-# 
-# pos_fig, pos_axarr = plt.subplots(2,2)
-# pos_axarr[0, 0].plot(pend_pos[:,1], pend_pos[:,2])
-# pos_axarr[0, 0].set_title(r'$b_2$ vs. $b_3$')
-# 
-# pos_axarr[1, 0].plot(pend_pos[:,1], pend_pos[:,0])
-# pos_axarr[1, 0].set_title(r'$b_2$ vs. $b_1$')
-# 
-# pos_axarr[1, 1].plot(pend_pos[:,2], pend_pos[:,0])
-# pos_axarr[1, 1].set_title(r'$b_3$ vs. $b_1$')
-# 
-# plt.show()
+def plot_pendulum(time, state, E, pend):
+
+
+    # extract out the state
+    pend_pos = pend.L *state[:,0:3]
+
+    # plot the energy behavior
+    energy_ax = plt.figure().add_subplot(111)
+    energy_ax.plot(time, np.absolute(E-E[0]), label=r'$E$')
+    energy_ax.set_xlabel('Time')
+    energy_ax.set_ylabel(r'$E$')
+    energy_ax.grid(True)
+
+    pos_norm_ax = plt.figure().add_subplot(111)
+    pos_norm_ax.plot(time, np.linalg.norm(state[:,0:3], ord=2, axis=1), label='NL')
+    pos_norm_ax.set_xlabel('Time')
+    pos_norm_ax.set_ylabel(r'$||q||$')
+    pos_norm_ax.grid(True)
+    pos_norm_ax.legend()
+
+    pos_fig, pos_axarr = plt.subplots(2,2)
+    pos_axarr[0, 0].plot(pend_pos[:,1], pend_pos[:,2])
+    pos_axarr[0, 0].set_title(r'$b_2$ vs. $b_3$')
+
+    pos_axarr[1, 0].plot(pend_pos[:,1], pend_pos[:,0])
+    pos_axarr[1, 0].set_title(r'$b_2$ vs. $b_1$')
+
+    pos_axarr[1, 1].plot(pend_pos[:,2], pend_pos[:,0])
+    pos_axarr[1, 1].set_title(r'$b_3$ vs. $b_1$')
+
+    plt.show()

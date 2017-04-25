@@ -5,7 +5,7 @@ from scipy import integrate
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-from plotting import animate_pendulum
+from plotting import animate_pendulum, plot_pendulum
 import pdb
 
 RelTol = 1e-4
@@ -15,28 +15,39 @@ pend = dynamics.Pendulum()
 initial_pos = attitude.rot2(40*np.pi/180, 'c').dot(np.array([-1, 0, 0]))
 initial_vel = np.array([0.0, 0, 0])
 
+# initial position should be orthogonal to the initial velocity
+np.testing.assert_almost_equal(initial_pos.dot(initial_vel), 0)
+
 initial_state = np.hstack((initial_pos, initial_vel))
+t0 = 0 
 tf = 60 
 dt = 0.01
 time = np.linspace(0,tf,tf/dt)
-
+num_steps = np.floor((tf-t0)/dt) + 1
 # define integration
 # state_nl = integrate.odeint(pend.nl_ode, initial_state, time, atol=AbsTol, rtol=RelTol)
 # state_len = integrate.odeint(pend.len_ode, initial_state, time, atol=AbsTol, rtol=RelTol)
 
 # use ode class
 solver = integrate.ode(pend.nl_ode)
-solver.set_integrator('vode', atol=AbsTol, rtol=RelTol).set_initial_value(initial_state, 0)
+solver.set_integrator('dop853', atol=AbsTol, rtol=RelTol)
+solver.set_initial_value(initial_state, 0)
 
-state_nl = []
+# initialize a vector to store the simulation data
+state_nl = np.zeros((int(num_steps),int(initial_state.shape[0])))
+t = np.zeros(int(num_steps))
 
-while solver.successful() and solver.t < tf:
+t[0] = t0
+state_nl[0,:] = initial_state
+ii = 1
+while solver.successful() and ii < num_steps:
     solver.integrate(solver.t + dt)
-    state_nl.append(solver.y)
+    t[ii] = solver.t
+    state_nl[ii,:] = solver.y
 
-state_nl = np.asarray(state_nl)
-pdb.set_trace()
+    ii = ii + 1
+
 T, V, L, E = pend.nl_energy(state_nl, time)
 
-
+plot_pendulum(t, state_nl, E, pend)
 # animate_pendulum(time, state_nl, pend)
