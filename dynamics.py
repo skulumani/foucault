@@ -38,7 +38,36 @@ class Pendulum(object):
 
         self.S = att.hat_map(Omega*(att.rot2(-beta, 'c').T.dot(np.array([0,0,1])))) 
 
-    def nl_ode(self, state, t):
+    def nl_ode(self, t, state):
+        """Nonlinear EOMs
+        
+        For use with scipy.ode class NOT odeint
+
+        """
+        m = self.m
+        L = self.L
+        S = self.S
+        Omega = self.Omega
+        Re = self.Re
+        g = self.g
+        Cbeta = self.Cbeta
+
+        pos = state[0:3]
+        vel = state[3:6]
+
+        proj_mat = np.eye(3) - np.outer(pos, pos)
+
+        body_pos = Re * np.array([1, 0, 0]) + L * pos
+
+        pos_dot = vel
+        vel_dot = -1 / m / L**2 * ( m*L**2*np.linalg.norm(vel)**2*pos + 2*m*L**2*proj_mat.dot(S).dot(vel)
+                                    - m*L*Omega**2*proj_mat.dot(Cbeta).dot(body_pos) + m*g*Re**2*L*proj_mat.dot(body_pos)/np.linalg.norm(body_pos)**3)
+        
+        state_dot = np.hstack((pos_dot, vel_dot))
+
+        return state_dot
+
+    def nl_odeint(self, state, t):
         """Nonlinear EOMs
 
         """
@@ -66,6 +95,33 @@ class Pendulum(object):
         return state_dot
     
     def len_ode(self, state, t):
+        """Length assumption - Earth radius is much larger than the pendulum length
+        
+        For use with scipy.ode NOT odeint
+        """
+
+        m = self.m
+        L = self.L
+        S = self.S
+        Omega = self.Omega
+        Re = self.Re
+        g = self.g
+        Cbeta = self.Cbeta
+
+        pos = state[0:3]
+        vel = state[3:6]
+
+        proj_mat = np.eye(3) - np.outer(pos, pos)
+
+        pos_dot = vel
+        vel_dot = -1/m/L**2 * (m*L**2*np.linalg.norm(vel)**2*pos + 2*m*L**2*proj_mat.dot(S).dot(vel) 
+                        - m*L*Re*Omega**2*proj_mat.dot(Cbeta).dot(np.array([1,0,0])) + m*g*L*proj_mat.dot(np.array([1,0,0])))
+
+        state_dot = np.hstack((pos_dot, vel_dot))
+
+        return state_dot
+
+    def len_odeint(self, state, t):
         """Length assumption - Earth radius is much larger than the pendulum length
 
         """
