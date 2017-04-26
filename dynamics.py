@@ -94,7 +94,7 @@ class Pendulum(object):
 
         return state_dot
     
-    def len_ode(self, state, t):
+    def len_ode(self, t, state):
         """Length assumption - Earth radius is much larger than the pendulum length
         
         For use with scipy.ode NOT odeint
