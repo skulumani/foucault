@@ -22,7 +22,7 @@ np.testing.assert_almost_equal(initial_pos.dot(initial_vel), 0)
 
 initial_state = np.hstack((initial_pos, initial_vel))
 t0 = 0 
-tf =3600
+tf =100 
 dt = 0.01
 time = np.linspace(0,tf,tf/dt)
 num_steps = np.floor((tf-t0)/dt) + 1

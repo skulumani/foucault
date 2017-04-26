@@ -97,6 +97,7 @@ def plot_pendulum(time, state, E, pend):
 
     # extract out the state
     pend_pos = pend.L *state[:,0:3]
+    pend_vel = state[:, 3:6]
 
     # plot the energy behavior
     energy_ax = plt.figure().add_subplot(111)
@@ -105,7 +106,7 @@ def plot_pendulum(time, state, E, pend):
     energy_ax.set_ylabel(r'$E$')
     energy_ax.grid(True)
 
-    pos_norm_ax = plt.figure().add_subplot(111)
+    pos_norm_fig, pos_norm_ax = plt.subplots() 
     pos_norm_ax.plot(time, np.linalg.norm(state[:,0:3], ord=2, axis=1), label='NL')
     pos_norm_ax.set_xlabel('Time')
     pos_norm_ax.set_ylabel(r'$||q||$')
@@ -122,4 +123,10 @@ def plot_pendulum(time, state, E, pend):
     pos_axarr[1, 1].plot(pend_pos[:,2], pend_pos[:,0])
     pos_axarr[1, 1].set_title(r'$b_3$ vs. $b_1$')
 
+    vel_fig, vel_axarr = plt.subplots()
+    vel_axarr.plot(time, np.linalg.norm(pend_vel, axis=1))
+    vel_axarr.set_xlabel(r'Time')
+    vel_axarr.set_ylabel(r'$||\dot{q}||$')
+    vel_axarr.grid(True)
+    vel_axarr.set_title(r'Velocity Norm')
     plt.show()
