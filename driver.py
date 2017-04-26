@@ -8,19 +8,21 @@ import matplotlib as mpl
 from plotting import animate_pendulum, plot_pendulum
 import pdb
 
-RelTol = 1e-4
-AbsTol = 1e-4
+RelTol = 1e-9
+AbsTol = 1e-9
 
-pend = dynamics.Pendulum()
-initial_pos = attitude.rot2(40*np.pi/180, 'c').dot(np.array([-1, 0, 0]))
-initial_vel = np.array([0.0, 0, 0])
+pend = dynamics.Pendulum(L=67, m=28, beta=0)
+# initial_pos = attitude.rot2(40*np.pi/180, 'c').dot(np.array([-1, 0, 0]))
+# initial_vel = sphere.tan_rand(initial_pos)
+initial_pos = np.array([-np.sqrt(2)/2, 0, np.sqrt(2)/2])
+initial_vel = np.array([0, 0, 0])
 
 # initial position should be orthogonal to the initial velocity
 np.testing.assert_almost_equal(initial_pos.dot(initial_vel), 0)
 
 initial_state = np.hstack((initial_pos, initial_vel))
 t0 = 0 
-tf = 60 
+tf =3600
 dt = 0.01
 time = np.linspace(0,tf,tf/dt)
 num_steps = np.floor((tf-t0)/dt) + 1
@@ -30,7 +32,7 @@ num_steps = np.floor((tf-t0)/dt) + 1
 
 # use ode class
 solver = integrate.ode(pend.nl_ode)
-solver.set_integrator('dop853', atol=AbsTol, rtol=RelTol)
+solver.set_integrator('dopri5', atol=AbsTol, rtol=RelTol)
 solver.set_initial_value(initial_state, 0)
 
 # initialize a vector to store the simulation data

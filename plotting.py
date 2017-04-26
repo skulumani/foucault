@@ -100,7 +100,7 @@ def plot_pendulum(time, state, E, pend):
 
     # plot the energy behavior
     energy_ax = plt.figure().add_subplot(111)
-    energy_ax.plot(time, np.absolute(E-E[0]), label=r'$E$')
+    energy_ax.plot(time, np.absolute((E-E[0])/ E), label=r'$E$')
     energy_ax.set_xlabel('Time')
     energy_ax.set_ylabel(r'$E$')
     energy_ax.grid(True)
