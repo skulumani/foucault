@@ -1,5 +1,5 @@
 import dynamics
-from kinematics import attitude
+from kinematics import attitude, sphere
 
 from scipy import integrate
 import numpy as np
