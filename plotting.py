@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib as mpl
 from matplotlib import animation, rc
 from mpl_toolkits.mplot3d import axes3d
 
@@ -43,7 +42,9 @@ def animate_pendulum(time, state, pend):
     b_frame_lines = [ax.plot([], [], [], '-', lw=2, c=c)[0] for c in ax_colors]
     pend_line = [ax.plot([], [], [], 'o-')[0]]
     traj = [ax.plot([], [], [], '-')[0]]
-    gr_traj = [ax.plot([], [], [], '-', c='g')[0]]
+    b2b3_traj = [ax.plot([], [], [], '-', c='g')[0]]
+    b3b1_traj = [ax.plot([], [], [], '-' , c='g')[0]]
+    b2b1_traj = [ax.plot([], [], [], '-', c='g')[0]]
 
     def init():
         for jj, b_line in enumerate(b_frame_lines):
@@ -57,10 +58,16 @@ def animate_pendulum(time, state, pend):
         traj[0].set_data([], [])
         traj[0].set_3d_properties([])
 
-        gr_traj[0].set_data([], [])
-        gr_traj[0].set_3d_properties([])
+        b2b3_traj[0].set_data([], [])
+        b2b3_traj[0].set_3d_properties([])
 
-        return b_frame_lines + pend_line + traj + gr_traj
+        b3b1_traj[0].set_data([], [])
+        b3b1_traj[0].set_3d_properties([])
+
+        b2b1_traj[0].set_data([], [])
+        b2b1_traj[0].set_3d_properties([])
+
+        return b_frame_lines + pend_line + traj + b2b3_traj + b3b1_traj + b2b1_traj
 
     def animate(ii):
         ii = (10 * ii) % time.shape[0]
@@ -71,10 +78,10 @@ def animate_pendulum(time, state, pend):
         z = pos[ii, 0]
         
         # plot the path the pendulum swings through
-        if ii < 100:
-            ind =  0
+        if ii < 1000:
+            ind = 0
         else:
-            ind =  ii-100
+            ind = ii-1000
         
         pend_line[0].set_data([0, x], [0, y])
         pend_line[0].set_3d_properties([0, z])
@@ -83,10 +90,15 @@ def animate_pendulum(time, state, pend):
         traj[0].set_data(pos[ind:ii,1], pos[ind:ii, 2])
         traj[0].set_3d_properties(pos[ind:ii,0])
 
-        gr_traj[0].set_data(pos[:ii,1], pos[:ii, 2])
-        gr_traj[0].set_3d_properties(-ax_lim * np.ones_like(pos[:ii,0]))
+        b2b3_traj[0].set_data(pos[ind:ii,1], pos[ind:ii, 2])
+        b2b3_traj[0].set_3d_properties(-ax_lim * np.ones_like(pos[ind:ii,0]))
 
-        return b_frame_lines + pend_line + traj + gr_traj
+        b3b1_traj[0].set_data(-ax_lim * np.ones_like(pos[ind:ii, 0]), pos[ind:ii,2])
+        b3b1_traj[0].set_3d_properties(pos[ind:ii, 0])
+
+        b2b1_traj[0].set_data(pos[ind:ii,1], ax_lim * np.ones_like(pos[ind:ii, 0]))
+        b2b1_traj[0].set_3d_properties(pos[ind:ii, 0])
+        return b_frame_lines + pend_line + traj + b2b3_traj + b3b1_traj + b2b1_traj
 
     anim = animation.FuncAnimation(fig, animate, init_func=init, frames=time.shape[0], interval=1/30*1e3, blit=True)
 
