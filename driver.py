@@ -6,23 +6,24 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 from plotting import animate_pendulum, plot_pendulum
+from kinematics import sphere
 import pdb
 
 RelTol = 1e-9
 AbsTol = 1e-9
 
 pend = dynamics.Pendulum(L=67, m=28, beta=0)
-# initial_pos = attitude.rot2(40*np.pi/180, 'c').dot(np.array([-1, 0, 0]))
-# initial_vel = sphere.tan_rand(initial_pos)
-initial_pos = np.array([-np.sqrt(2)/2, 0, np.sqrt(2)/2])
-initial_vel = np.array([0, 0, 0])
+initial_pos = attitude.rot2(40*np.pi/180, 'c').dot(np.array([-1, 0, 0]))
+initial_vel = 0.1* sphere.tan_rand(initial_pos)
+# initial_pos = np.array([-np.sqrt(2)/2, 0, np.sqrt(2)/2])
+# initial_vel = np.array([0, 0, 0])
 
 # initial position should be orthogonal to the initial velocity
 np.testing.assert_almost_equal(initial_pos.dot(initial_vel), 0)
 
 initial_state = np.hstack((initial_pos, initial_vel))
 t0 = 0 
-tf =100 
+tf = 1000 
 dt = 0.01
 time = np.linspace(0,tf,tf/dt)
 num_steps = np.floor((tf-t0)/dt) + 1
