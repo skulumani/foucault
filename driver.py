@@ -23,7 +23,7 @@ np.testing.assert_almost_equal(initial_pos.dot(initial_vel), 0)
 
 initial_state = np.hstack((initial_pos, initial_vel))
 t0 = 0 
-tf = 1000 
+tf = 500 
 dt = 0.01
 time = np.linspace(0,tf,tf/dt)
 num_steps = np.floor((tf-t0)/dt) + 1
@@ -52,5 +52,5 @@ while solver.successful() and ii < num_steps:
 
 T, V, L, E = pend.nl_energy(state_nl, time)
 
-plot_pendulum(t, state_nl, E, pend)
-# animate_pendulum(time, state_nl, pend)
+# plot_pendulum(t, state_nl, E, pend)
+animate_pendulum(time, state_nl, pend)
